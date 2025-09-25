@@ -1,5 +1,5 @@
 #資料讀取
-data = read.csv(file.choose())
+data = read.csv("melanoma.csv",header = TRUE)
 
 ###資料前處理
 #設定censoring indicator
