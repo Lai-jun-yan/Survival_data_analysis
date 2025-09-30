@@ -155,6 +155,9 @@ exp(coef(aft_model)["skin.2"])
 #潰瘍的效果
 exp(coef(aft_model)["Ulceration"])
 
+#性別與交互作用的效果
+exp(coef(aft_model)["Sex:Ulceration"])
+
 #性別與潰瘍的交互作用效果
 #建立無交互作用的模型
 aft_model_no_int <- survreg(
@@ -203,7 +206,7 @@ time <- 5*365  # 5 年換成天數
 lambda <- exp(eta)
 
 S_5yr <- exp(-(time/lambda)^k)  # 5年存活率
-H_5yr <- (time/lambda)^k         # 累積風險
+H_5yr <- -log(S_5yr)         # 累積風險
 
 eta <- as.numeric(eta)
 S_5yr <- as.numeric(S_5yr)
