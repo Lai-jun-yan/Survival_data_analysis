@@ -1,15 +1,17 @@
-library(survival)
-library(ggplot2)
+# 6. Schoenfeld 殘差檢定與繪圖
 
-# Cox 模型
-cox_model <- coxph(Surv(Time, Status) ~ Treatment, data = df)
+cox1 <- coxph(Surv(Time, Status) ~ Treatment, data = df)
 
-# Schoenfeld 殘差檢驗
-zph <- cox.zph(cox_model)
+residuals(cox1, type="scaledsch")
 
-# 查看檢定結果
-print(zph)
+zph.cox = cox.zph(cox1 , transform="identity")
 
-# 畫 β(t) 隨時間變化曲線
-plot(zph, var="Treatment", main="Time-varying effect of Treatment (β(t))")
-abline(h=0, col="red", lty=2)  # 加水平線作為參考
+zph.cox
+
+par(mfrow=c(1, length(cox1$coef)))
+for (i in 1: length(cox1$coef)) {
+  plot(zph.cox[i]); 
+  abline(h=0, col=2)
+  abline(h=coef(cox1)[i], col=3)
+}
+
